@@ -1,3 +1,16 @@
+<?php 
+session_start();
+
+// Verificando se existe coockie 
+if($_COOKIE['usuario']) {
+    $_SESSION['usuario'] = $_COOKIE['usuario']; 
+}
+
+if(!$_SESSION['usuario']) {
+    header('Location: login.php'); // Caso usuario não estiver logado, redirecionar para tela de login
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +24,10 @@
         <h1>Curso PHP</h1>
         <h2>Índice dos Exercícios</h2>
     </header>
+    <nav class="navegacao">
+        <span class="usuario">Usuário: <?= $_SESSION['usuario'] ?></span>
+        <a href="logout.php" class="vermelho">Sair</a>
+    </nav>
     <main class="principal">
         <div class="conteudo">
             <?php require_once('menu.php'); ?>
