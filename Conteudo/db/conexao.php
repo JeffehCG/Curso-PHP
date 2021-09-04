@@ -1,5 +1,7 @@
 <?php
 
+// Acessando banco Mysql http://localhost/phpMyAdmin/
+
 // Criando nova conexão
 function novaConexao($banco = 'curso_php') {
     $servidor = '127.0.0.1:3306';

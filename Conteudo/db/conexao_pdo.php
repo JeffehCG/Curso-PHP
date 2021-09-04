@@ -1,5 +1,7 @@
 <?php
 
+// Acessando banco Mysql http://localhost/phpMyAdmin/
+
 function novaConexao($banco = 'curso_php') {
     $servidor = '127.0.0.1:3306';
     $usuario = 'root';
