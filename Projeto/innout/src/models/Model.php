@@ -14,16 +14,20 @@ class Model {
 
     public function loadFromArray($arr, $sanitize = true) {
 
-        // Caso seja passado o $arr, ele é salvo  em values
+        // Caso seja passado o $arr(array com chave valor), ele é salvo  em values
         if($arr) {
             // $conn = Database::getConnection();
             foreach($arr as $key => $value) {
                 $cleanValue = $value;
+
+                // Removendo caracter estranhos do valor da coluna
+                // Assim evitando sql injection e script injection
                 if($sanitize && isset($cleanValue)) {
-                    $cleanValue = strip_tags(trim($cleanValue));
-                    $cleanValue = htmlentities($cleanValue, ENT_NOQUOTES);
-                    // $cleanValue = mysqli_real_escape_string($conn, $cleanValue);
+                    $cleanValue = strip_tags(trim($cleanValue)); // strip_tags - removendo tags html etc...
+                    $cleanValue = htmlentities($cleanValue, ENT_NOQUOTES); // Converter em entidades html
+                    // $cleanValue = mysqli_real_escape_string($conn, $cleanValue); // Removendo sql injection
                 }
+
                 $this->$key = $cleanValue; // adicionando valor em values - __set - metodo magico
             }
             // $conn->close();
@@ -101,7 +105,7 @@ class Model {
     public static function getCount($filters = []) {
         $result = static::getResultSetFromSelect(
             $filters, 'count(*) as count');
-        return $result->fetch_assoc()['count'];
+        return $result->fetch_assoc()['count']; // Pegando apenas a chave count
     }
 
     public function delete() {
@@ -119,6 +123,7 @@ class Model {
         if(count($filters) > 0) {
             $sql .= " WHERE 1 = 1";
             foreach($filters as $column => $value) {
+                // Caso venha como raw, ira colocar um codigo sql puro em value
                 if($column == 'raw') {
                     $sql .= " AND {$value}";
                 } else {

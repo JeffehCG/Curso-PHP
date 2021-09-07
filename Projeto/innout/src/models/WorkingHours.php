@@ -61,11 +61,13 @@ class WorkingHours extends Model {
     }
 
     function getWorkedInterval() {
+        // Cada variavel ira representar a respectiva posição do array retornado
         [$t1, $t2, $t3, $t4] = $this->getTimes();
 
         $part1 = new DateInterval('PT0S');
         $part2 = new DateInterval('PT0S');
 
+        // Calculando o periodo dos pontos - diff pega a diferença entre as datas
         if($t1) $part1 = $t1->diff(new DateTime());
         if($t2) $part1 = $t1->diff($t2);
         if($t3) $part2 = $t3->diff(new DateTime());
@@ -75,8 +77,9 @@ class WorkingHours extends Model {
     }
 
     function getLunchInterval() {
+        // Iremos utilizar apenas a posição 2 e 3 do array
         [, $t2, $t3,] = $this->getTimes();
-        $lunchInterval = new DateInterval('PT0S');
+        $lunchInterval = new DateInterval('PT0S'); // DateInterval zerado
 
         if($t2) $lunchInterval = $t2->diff(new DateTime());
         if($t3) $lunchInterval = $t2->diff($t3);
@@ -108,6 +111,7 @@ class WorkingHours extends Model {
         return "{$sign}{$balanceString}";
     }
 
+    // Retornar usuarios ausentes, sem conciderar usuarios desligados
     public static function getAbsentUsers() {
         $today = new DateTime();
         $result = Database::getResultFromQuery("
@@ -130,6 +134,7 @@ class WorkingHours extends Model {
         return $absentUsers;
     }
 
+    // Horario total de trabalho de todos funcionarios no mês
     public static function getWorkedTimeInMonth($yearAndMonth) {
         $startDate = (new DateTime("{$yearAndMonth}-1"))->format('Y-m-d');
         $endDate = getLastDayOfMonth($yearAndMonth)->format('Y-m-d');
@@ -151,6 +156,7 @@ class WorkingHours extends Model {
 
         if($result) {
             while($row = $result->fetch_assoc()) {
+                // A chave do array sera o dia de trabalho
                 $registries[$row['work_date']] = new WorkingHours($row);
             }
         }

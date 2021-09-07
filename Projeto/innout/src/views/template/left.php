@@ -13,6 +13,7 @@
                     Relatório Mensal
                 </a>
             </li>
+            <!-- Apenas para usuarios administrativos -->
             <?php if($user->is_admin): ?>
             <li class="nav-item">
                 <a href="manager_report.php">
@@ -33,6 +34,7 @@
         <div class="sidebar-widget">
             <i class="icon icofont-hour-glass text-primary"></i>
             <div class="info">
+                <!-- Horarios carragados no loader -->
                 <span class="main text-primary"
                     <?= $activeClock === 'workedInterval' ? 'active-clock' : '' ?>>
                     <?= $workedInterval ?>
